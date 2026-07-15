@@ -1,6 +1,7 @@
 package org.example;
 
 import java.io.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class FileManager {
                 LocalTime time = LocalTime.parse(parts[1]);
                 String description = parts[2];
                 String vendor = parts[3];
-                double amount = Double.parseDouble(parts[4]);
+                BigDecimal amount = new BigDecimal(parts[4]);
 
                 Transaction transaction = new Transaction(date, time, description, vendor, amount);
                 transactions.add(transaction);

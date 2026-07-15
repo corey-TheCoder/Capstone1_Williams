@@ -1,5 +1,6 @@
 package org.example;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Comparator;
@@ -8,7 +9,6 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class Main {
-    //changes?
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
@@ -66,15 +66,15 @@ public class Main {
         String vendor = scanner.nextLine().trim();
 
         System.out.print("Amount (positive number): ");
-        double amount;
+        BigDecimal amount;
         try {
-            amount = Double.parseDouble(scanner.nextLine().trim());
+            amount = new BigDecimal(scanner.nextLine().trim());
         } catch (NumberFormatException e) {
             System.out.println("Invalid amount. Deposit cancelled.");
             return;
         }
 
-        if (amount <= 0) {
+        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
             System.out.println("Deposit amount must be positive. Deposit cancelled.");
             return;
         }
@@ -84,7 +84,7 @@ public class Main {
                 LocalTime.now().withNano(0),
                 description,
                 vendor,
-                amount
+                amount.negate()
         );
 
         FileManager.saveTransaction(deposit);
@@ -103,15 +103,15 @@ public class Main {
         String vendor = scanner.nextLine().trim();
 
         System.out.print("Amount (positive number): ");
-        double amount;
+        BigDecimal amount;
         try {
-            amount = Double.parseDouble(scanner.nextLine().trim());
+            amount = new BigDecimal(scanner.nextLine().trim());
         } catch (NumberFormatException e) {
             System.out.println("Invalid amount. Payment cancelled.");
             return;
         }
 
-        if (amount <= 0) {
+        if (amount.compareTo(BigDecimal.ZERO)<= 0) {
             System.out.println("Payment amount must be positive. Payment cancelled.");
             return;
         }
@@ -122,7 +122,7 @@ public class Main {
                 LocalTime.now().withNano(0),
                 description,
                 vendor,
-                -amount
+                amount.negate()
         );
 
         FileManager.saveTransaction(payment);
@@ -154,7 +154,7 @@ public class Main {
 
                 case "D":
                     List<Transaction> deposits = FileManager.getTransactions().stream()
-                            .filter(t -> t.getAmount() > 0)
+                            .filter(t -> t.getAmount().compareTo(BigDecimal.ZERO) > 0)
                             .collect(Collectors.toList());
                     System.out.println("\n--- Deposits ---");
                     displayTransactions(deposits);
@@ -162,7 +162,7 @@ public class Main {
 
                 case "P":
                     List<Transaction> payments = FileManager.getTransactions().stream()
-                            .filter(t -> t.getAmount() < 0)
+                            .filter(t -> t.getAmount().compareTo(BigDecimal.ZERO) < 0)
                             .collect(Collectors.toList());
                     System.out.println("\n--- Payments ---");
                     displayTransactions(payments);

@@ -1,5 +1,6 @@
 package org.example;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -8,9 +9,9 @@ public class Transaction {
     private LocalTime time;
     private String description;
     private String vendor;
-    private double amount;
+    private BigDecimal amount;
 
-    public Transaction(LocalDate date, LocalTime time, String description, String vendor, double amount) {
+    public Transaction(LocalDate date, LocalTime time, String description, String vendor, BigDecimal amount) {
         this.date = date;
         this.time = time;
         this.description = description;
@@ -50,11 +51,11 @@ public class Transaction {
         this.vendor = vendor;
     }
 
-    public double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 
